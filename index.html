@@ -1,0 +1,1743 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>PostHog AI Product Engineer - Sam's Projects</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
+            background: #f3ede1;
+            color: #35373b;
+            line-height: 1.6;
+        }
+
+        /* Header */
+        header {
+            background: linear-gradient(135deg, #f3ede1 0%, #e8dcc8 100%);
+            padding: 3rem 2rem;
+            text-align: center;
+            border-bottom: 4px solid #f7a501;
+            position: relative;
+            overflow: hidden;
+        }
+
+        header::before {
+            content: '🦔';
+            position: absolute;
+            font-size: 8rem;
+            opacity: 0.1;
+            top: -2rem;
+            right: 5%;
+            animation: float 6s ease-in-out infinite;
+        }
+
+        header::after {
+            content: '🤖';
+            position: absolute;
+            font-size: 6rem;
+            opacity: 0.1;
+            top: 1rem;
+            left: 5%;
+            animation: float 8s ease-in-out infinite reverse;
+        }
+
+        @keyframes float {
+            0%, 100% { transform: translateY(0px); }
+            50% { transform: translateY(-20px); }
+        }
+
+        header h1 {
+            font-size: 3rem;
+            margin-bottom: 0.8rem;
+            font-weight: 900;
+            color: #35373b;
+            letter-spacing: -1px;
+        }
+
+        header h1 span {
+            color: #f7a501;
+        }
+
+        header p {
+            font-size: 1.3rem;
+            margin-bottom: 0.5rem;
+            font-weight: 400;
+            color: #5f6368;
+        }
+
+        .header-subtitle {
+            font-size: 1rem;
+            font-weight: 300;
+            color: #8b8d91;
+            max-width: 800px;
+            margin: 0 auto;
+        }
+
+        /* Navigation */
+        nav {
+            background: #ffffff;
+            border-bottom: 3px solid #f7a501;
+            position: sticky;
+            top: 0;
+            z-index: 100;
+            box-shadow: 0 2px 20px rgba(0,0,0,0.08);
+        }
+
+        nav ul {
+            list-style: none;
+            display: flex;
+            justify-content: center;
+            max-width: 1200px;
+            margin: 0 auto;
+            flex-wrap: wrap;
+        }
+
+        nav li {
+            flex: 1;
+            min-width: 200px;
+        }
+
+        nav button {
+            width: 100%;
+            padding: 1.5rem 2rem;
+            background: #ffffff;
+            color: #35373b;
+            border: none;
+            border-right: 1px solid #e8dcc8;
+            cursor: pointer;
+            font-size: 1.05rem;
+            font-weight: 700;
+            transition: all 0.3s ease;
+            position: relative;
+        }
+
+        nav button::before {
+            content: attr(data-emoji);
+            margin-right: 0.5rem;
+            font-size: 1.3rem;
+        }
+
+        nav button:hover {
+            background: #fff9ed;
+            transform: translateY(-2px);
+        }
+
+        nav button.active {
+            background: #f7a501;
+            color: #ffffff;
+        }
+
+        nav li:last-child button {
+            border-right: none;
+        }
+
+        /* Container */
+        .container {
+            max-width: 1400px;
+            margin: 0 auto;
+            padding: 3rem 2rem;
+        }
+
+        /* Mission Banner */
+        .mission-banner {
+            background: linear-gradient(135deg, #f7a501 0%, #ff8800 100%);
+            color: #ffffff;
+            padding: 2rem;
+            border-radius: 12px;
+            text-align: center;
+            font-weight: 600;
+            font-size: 1.2rem;
+            margin-bottom: 3rem;
+            box-shadow: 0 4px 20px rgba(247, 165, 1, 0.3);
+            animation: pulse-border 3s ease-in-out infinite;
+        }
+
+        @keyframes pulse-border {
+            0%, 100% { box-shadow: 0 4px 20px rgba(247, 165, 1, 0.3); }
+            50% { box-shadow: 0 4px 30px rgba(247, 165, 1, 0.5); }
+        }
+
+        /* Project Section */
+        .project-section {
+            display: none;
+            animation: fadeInUp 0.6s ease;
+        }
+
+        .project-section.active {
+            display: block;
+        }
+
+        @keyframes fadeInUp {
+            from { 
+                opacity: 0; 
+                transform: translateY(40px);
+            }
+            to { 
+                opacity: 1; 
+                transform: translateY(0);
+            }
+        }
+
+        /* Project Header */
+        .project-header {
+            background: #ffffff;
+            color: #35373b;
+            padding: 3rem;
+            margin-bottom: 3rem;
+            border-radius: 16px;
+            box-shadow: 0 8px 30px rgba(0,0,0,0.08);
+            border-left: 8px solid #f7a501;
+            transition: all 0.3s ease;
+        }
+
+        .project-header:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 12px 40px rgba(0,0,0,0.12);
+        }
+
+        .project-header h2 {
+            font-size: 2.5rem;
+            margin-bottom: 0.8rem;
+            font-weight: 900;
+            letter-spacing: -1px;
+        }
+
+        .project-header h2::before {
+            content: attr(data-emoji);
+            margin-right: 1rem;
+        }
+
+        .project-header p {
+            font-size: 1.2rem;
+            font-weight: 400;
+            color: #5f6368;
+        }
+
+        /* Demo Area */
+        .demo-area {
+            background: #ffffff;
+            border-radius: 16px;
+            padding: 3rem;
+            margin-bottom: 3rem;
+            box-shadow: 0 4px 20px rgba(0,0,0,0.08);
+        }
+
+        .demo-area h3 {
+            font-size: 1.5rem;
+            margin-bottom: 1.5rem;
+            font-weight: 700;
+            color: #35373b;
+        }
+
+        /* Upload Zone */
+        .upload-zone {
+            border: 3px dashed #f7a501;
+            border-radius: 16px;
+            padding: 4rem;
+            text-align: center;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            background: linear-gradient(135deg, #fff9ed 0%, #ffffff 100%);
+        }
+
+        .upload-zone:hover {
+            background: linear-gradient(135deg, #f7a501 0%, #ff8800 100%);
+            color: #ffffff;
+            transform: scale(1.02);
+            border-style: solid;
+        }
+
+        .upload-zone.active {
+            background: linear-gradient(135deg, #f7a501 0%, #ff8800 100%);
+            color: #ffffff;
+            animation: pulse 0.6s ease-in-out;
+        }
+
+        @keyframes pulse {
+            0%, 100% { transform: scale(1); }
+            50% { transform: scale(1.03); }
+        }
+
+        .upload-icon {
+            font-size: 4rem;
+            margin-bottom: 1.5rem;
+            display: block;
+            transition: transform 0.3s ease;
+        }
+
+        .upload-zone:hover .upload-icon {
+            transform: rotate(10deg) scale(1.2);
+        }
+
+        .upload-zone h3 {
+            font-size: 1.5rem;
+            margin-bottom: 0.5rem;
+            font-weight: 700;
+        }
+
+        /* Processing Animation */
+        .processing {
+            display: none;
+            text-align: center;
+            padding: 4rem;
+            background: linear-gradient(135deg, #fff9ed 0%, #ffffff 100%);
+            border: 3px solid #f7a501;
+            border-radius: 16px;
+            margin: 2rem 0;
+        }
+
+        .processing.active {
+            display: block;
+            animation: fadeInUp 0.4s ease;
+        }
+
+        .spinner {
+            border: 6px solid #f3ede1;
+            border-top: 6px solid #f7a501;
+            border-radius: 50%;
+            width: 70px;
+            height: 70px;
+            animation: spin 1s linear infinite;
+            margin: 0 auto 2rem auto;
+        }
+
+        @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+
+        .processing h3 {
+            font-size: 1.5rem;
+            margin-bottom: 0.5rem;
+            font-weight: 700;
+            color: #35373b;
+        }
+
+        /* Results */
+        .results {
+            display: none;
+            background: #ffffff;
+            border-radius: 16px;
+            padding: 3rem;
+            margin-top: 2rem;
+            box-shadow: 0 4px 20px rgba(0,0,0,0.08);
+        }
+
+        .results.active {
+            display: block;
+            animation: fadeInUp 0.6s ease;
+        }
+
+        .results > h3 {
+            font-size: 2rem;
+            margin-bottom: 2rem;
+            font-weight: 800;
+            border-bottom: 4px solid #f7a501;
+            padding-bottom: 1rem;
+            color: #35373b;
+        }
+
+        .result-item {
+            background: linear-gradient(135deg, #fff9ed 0%, #ffffff 100%);
+            padding: 2rem;
+            margin-bottom: 1.5rem;
+            border-left: 6px solid #f7a501;
+            border-radius: 12px;
+            transition: all 0.3s ease;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.05);
+        }
+
+        .result-item:hover {
+            transform: translateX(10px);
+            box-shadow: 0 4px 20px rgba(247, 165, 1, 0.2);
+            border-left-width: 10px;
+        }
+
+        .result-item h4 {
+            font-size: 1.3rem;
+            margin-bottom: 1rem;
+            font-weight: 700;
+            color: #35373b;
+        }
+
+        .result-item h4::before {
+            content: attr(data-emoji);
+            margin-right: 0.7rem;
+        }
+
+        .result-item p {
+            color: #5f6368;
+            margin-bottom: 0.6rem;
+            font-size: 1.05rem;
+        }
+
+        .confidence-bar {
+            background: #e8dcc8;
+            height: 12px;
+            border-radius: 6px;
+            overflow: hidden;
+            margin-top: 1rem;
+        }
+
+        .confidence-fill {
+            background: linear-gradient(90deg, #f7a501 0%, #ff8800 100%);
+            height: 100%;
+            border-radius: 6px;
+            transition: width 1.2s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+
+        /* Metrics Grid */
+        .metrics-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 2rem;
+            margin: 3rem 0;
+        }
+
+        .metric-card {
+            background: linear-gradient(135deg, #f7a501 0%, #ff8800 100%);
+            color: #ffffff;
+            padding: 2.5rem;
+            text-align: center;
+            border-radius: 16px;
+            transition: all 0.3s ease;
+            box-shadow: 0 4px 20px rgba(247, 165, 1, 0.3);
+        }
+
+        .metric-card:hover {
+            transform: translateY(-10px) scale(1.05);
+            box-shadow: 0 8px 30px rgba(247, 165, 1, 0.5);
+        }
+
+        .metric-value {
+            font-size: 3.5rem;
+            font-weight: 900;
+            margin-bottom: 0.5rem;
+        }
+
+        .metric-label {
+            font-size: 1rem;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            font-weight: 600;
+            opacity: 0.95;
+        }
+
+        /* Feature List */
+        .feature-list {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
+            gap: 2rem;
+            margin: 3rem 0;
+        }
+
+        .feature-item {
+            background: #ffffff;
+            border: 3px solid #f7a501;
+            border-radius: 16px;
+            padding: 2rem;
+            transition: all 0.3s ease;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.05);
+        }
+
+        .feature-item:hover {
+            background: linear-gradient(135deg, #fff9ed 0%, #ffffff 100%);
+            transform: translateY(-5px);
+            box-shadow: 0 8px 30px rgba(247, 165, 1, 0.3);
+        }
+
+        .feature-item h4 {
+            font-size: 1.4rem;
+            margin-bottom: 1rem;
+            font-weight: 700;
+            color: #35373b;
+        }
+
+        .feature-item h4::before {
+            content: attr(data-emoji);
+            margin-right: 0.7rem;
+        }
+
+        .feature-item p {
+            line-height: 1.7;
+            color: #5f6368;
+        }
+
+        /* Buttons */
+        .btn {
+            background: linear-gradient(135deg, #f7a501 0%, #ff8800 100%);
+            color: #ffffff;
+            padding: 1.2rem 3rem;
+            border: none;
+            border-radius: 8px;
+            cursor: pointer;
+            font-size: 1.05rem;
+            font-weight: 700;
+            transition: all 0.3s ease;
+            margin: 0.5rem;
+            display: inline-block;
+            box-shadow: 0 4px 15px rgba(247, 165, 1, 0.3);
+        }
+
+        .btn:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 6px 25px rgba(247, 165, 1, 0.5);
+        }
+
+        .btn-secondary {
+            background: #ffffff;
+            color: #f7a501;
+            border: 3px solid #f7a501;
+        }
+
+        .btn-secondary:hover {
+            background: #fff9ed;
+        }
+
+        /* Tags */
+        .tag {
+            display: inline-block;
+            background: linear-gradient(135deg, #f7a501 0%, #ff8800 100%);
+            color: #ffffff;
+            padding: 0.4rem 1.2rem;
+            border-radius: 20px;
+            font-size: 0.9rem;
+            margin: 0.3rem;
+            font-weight: 700;
+            box-shadow: 0 2px 10px rgba(247, 165, 1, 0.3);
+        }
+
+        .tag-red {
+            background: linear-gradient(135deg, #dc2626 0%, #b91c1c 100%);
+        }
+
+        .tag-green {
+            background: linear-gradient(135deg, #16a34a 0%, #15803d 100%);
+        }
+
+        .tag-blue {
+            background: linear-gradient(135deg, #2563eb 0%, #1d4ed8 100%);
+        }
+
+        /* Impact Table */
+        .impact-table {
+            width: 100%;
+            border-collapse: collapse;
+            margin: 3rem 0;
+            background: #ffffff;
+            border-radius: 16px;
+            overflow: hidden;
+            box-shadow: 0 4px 20px rgba(0,0,0,0.08);
+        }
+
+        .impact-table th,
+        .impact-table td {
+            padding: 1.5rem;
+            text-align: left;
+            border-bottom: 2px solid #f3ede1;
+        }
+
+        .impact-table th {
+            background: linear-gradient(135deg, #f7a501 0%, #ff8800 100%);
+            color: #ffffff;
+            font-weight: 700;
+            text-transform: uppercase;
+            font-size: 0.9rem;
+            letter-spacing: 1px;
+        }
+
+        .impact-table tr {
+            transition: background 0.2s ease;
+        }
+
+        .impact-table tr:hover {
+            background: #fff9ed;
+        }
+
+        .impact-number {
+            font-size: 1.4rem;
+            font-weight: 900;
+            color: #f7a501;
+        }
+
+        /* Visual Grid */
+        .visual-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 1.5rem;
+            margin: 2rem 0;
+        }
+
+        .visual-cell {
+            background: linear-gradient(135deg, #fff9ed 0%, #ffffff 100%);
+            border: 2px solid #f7a501;
+            border-radius: 12px;
+            padding: 2rem;
+            text-align: center;
+            transition: all 0.3s ease;
+        }
+
+        .visual-cell:hover {
+            background: linear-gradient(135deg, #f7a501 0%, #ff8800 100%);
+            color: #ffffff;
+            transform: scale(1.05);
+        }
+
+        .visual-cell h5 {
+            font-size: 1.1rem;
+            font-weight: 700;
+            margin-bottom: 0.5rem;
+        }
+
+        /* Timeline */
+        .timeline {
+            background: #ffffff;
+            border-radius: 16px;
+            padding: 2rem;
+            margin: 2rem 0;
+            box-shadow: 0 4px 20px rgba(0,0,0,0.08);
+        }
+
+        .timeline-item {
+            padding: 1.5rem;
+            border-left: 6px solid #f7a501;
+            margin-bottom: 1.5rem;
+            background: linear-gradient(135deg, #fff9ed 0%, #ffffff 100%);
+            border-radius: 8px;
+            transition: all 0.3s ease;
+        }
+
+        .timeline-item:hover {
+            transform: translateX(10px);
+            border-left-width: 10px;
+            box-shadow: 0 4px 15px rgba(247, 165, 1, 0.2);
+        }
+
+        .timeline-item h5 {
+            font-size: 1.2rem;
+            font-weight: 700;
+            margin-bottom: 0.5rem;
+            color: #35373b;
+        }
+
+        .timeline-item h5::before {
+            content: attr(data-emoji);
+            margin-right: 0.7rem;
+        }
+
+        .timeline-item p {
+            color: #5f6368;
+        }
+
+        /* Architecture Diagram */
+        .arch-diagram {
+            background: #ffffff;
+            border: 3px solid #f7a501;
+            border-radius: 16px;
+            padding: 3rem;
+            margin: 3rem 0;
+            text-align: center;
+        }
+
+        .arch-flow {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            gap: 2rem;
+            margin: 2rem 0;
+            flex-wrap: wrap;
+        }
+
+        .arch-node {
+            background: linear-gradient(135deg, #f7a501 0%, #ff8800 100%);
+            color: #ffffff;
+            padding: 2rem;
+            min-width: 150px;
+            border-radius: 12px;
+            font-weight: 700;
+            transition: all 0.3s ease;
+            box-shadow: 0 4px 15px rgba(247, 165, 1, 0.3);
+        }
+
+        .arch-node:hover {
+            transform: scale(1.1) rotate(2deg);
+            box-shadow: 0 6px 25px rgba(247, 165, 1, 0.5);
+        }
+
+        .arch-arrow {
+            font-size: 2.5rem;
+            font-weight: 900;
+            color: #f7a501;
+        }
+
+        /* Hedgehog Characters */
+        .hedgehog {
+            font-size: 3rem;
+            display: inline-block;
+            animation: bounce 2s ease-in-out infinite;
+        }
+
+        @keyframes bounce {
+            0%, 100% { transform: translateY(0); }
+            50% { transform: translateY(-10px); }
+        }
+
+        /* Agent Chat Interface */
+        .agent-chat {
+            background: #1c1e21;
+            border-radius: 16px;
+            padding: 2rem;
+            margin: 2rem 0;
+            border-left: 6px solid #f7a501;
+        }
+
+        .chat-message {
+            padding: 1rem 1.5rem;
+            margin: 1rem 0;
+            border-radius: 12px;
+            max-width: 85%;
+        }
+
+        .chat-message.agent {
+            background: linear-gradient(135deg, #f7a501 0%, #ff8800 100%);
+            color: #ffffff;
+            margin-right: auto;
+        }
+
+        .chat-message.system {
+            background: #2d2f33;
+            color: #e6edf3;
+            margin-left: auto;
+            font-family: 'Monaco', 'Menlo', monospace;
+            font-size: 0.9rem;
+        }
+
+        .chat-message .sender {
+            font-weight: 700;
+            margin-bottom: 0.5rem;
+            display: block;
+        }
+
+        /* Dashboard Preview */
+        .dashboard-preview {
+            background: #1c1e21;
+            border-radius: 16px;
+            padding: 2rem;
+            margin: 2rem 0;
+            color: #e6edf3;
+        }
+
+        .dashboard-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 2rem;
+            padding-bottom: 1rem;
+            border-bottom: 2px solid #35373b;
+        }
+
+        .dashboard-title {
+            font-size: 1.5rem;
+            font-weight: 700;
+        }
+
+        .dashboard-stats {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 1rem;
+        }
+
+        .dash-stat {
+            background: #2d2f33;
+            padding: 1.5rem;
+            border-radius: 8px;
+            text-align: center;
+        }
+
+        .dash-stat-value {
+            font-size: 2rem;
+            font-weight: 900;
+            color: #f7a501;
+        }
+
+        .dash-stat-label {
+            font-size: 0.85rem;
+            color: #8b8d91;
+            text-transform: uppercase;
+            margin-top: 0.5rem;
+        }
+
+        /* Code Block */
+        .code-block {
+            background: #1c1e21;
+            color: #e6edf3;
+            padding: 2rem;
+            border-radius: 12px;
+            font-family: 'Monaco', 'Menlo', 'Courier New', monospace;
+            font-size: 0.95rem;
+            line-height: 1.8;
+            margin: 2rem 0;
+            overflow-x: auto;
+            border-left: 6px solid #f7a501;
+            box-shadow: 0 4px 20px rgba(0,0,0,0.15);
+            white-space: pre;
+        }
+
+        /* Footer */
+        footer {
+            background: linear-gradient(135deg, #35373b 0%, #2a2c2f 100%);
+            color: #ffffff;
+            text-align: center;
+            padding: 4rem 2rem;
+            margin-top: 5rem;
+            border-top: 5px solid #f7a501;
+        }
+
+        footer p {
+            margin: 1rem 0;
+        }
+
+        footer a {
+            color: #f7a501;
+            text-decoration: none;
+            font-weight: 600;
+            padding: 0.3rem 0.8rem;
+            border-bottom: 2px solid transparent;
+            transition: all 0.3s ease;
+        }
+
+        footer a:hover {
+            border-bottom: 2px solid #f7a501;
+        }
+
+        /* Responsive */
+        @media (max-width: 768px) {
+            nav ul {
+                flex-direction: column;
+            }
+
+            header h1 {
+                font-size: 2rem;
+            }
+
+            .metrics-grid,
+            .feature-list,
+            .visual-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .project-header h2 {
+                font-size: 1.8rem;
+            }
+
+            .arch-flow {
+                flex-direction: column;
+            }
+
+            .dashboard-stats {
+                grid-template-columns: repeat(2, 1fr);
+            }
+        }
+
+        /* Smooth Scrolling */
+        html {
+            scroll-behavior: smooth;
+        }
+
+        /* Selection Color */
+        ::selection {
+            background: #f7a501;
+            color: #ffffff;
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <h1>🦔 <span>PostHog</span> AI Product Engineering</h1>
+        <p>Three Agentic AI Projects That Make PostHog 10x More Powerful</p>
+        <p class="header-subtitle">Built by Sam - AI Engineer who ships end-to-end, thinks like a product builder, and embraces weird 🤖</p>
+    </header>
+
+    <nav>
+        <ul>
+            <li><button class="nav-btn active" data-project="bughunter" data-emoji="🐛">Bug Hunter Agent</button></li>
+            <li><button class="nav-btn" data-project="autopilot" data-emoji="🧠">Product Autopilot</button></li>
+            <li><button class="nav-btn" data-project="agentlens" data-emoji="📊">AgentLens</button></li>
+        </ul>
+    </nav>
+
+    <div class="container">
+        <div class="mission-banner">
+            🤖 Building agents on top of real customer data — not toy demos. Impact from day one.
+        </div>
+
+        <!-- Project 1: Bug Hunter Agent -->
+        <div id="bughunter" class="project-section active">
+            <div class="project-header">
+                <h2 data-emoji="🐛">Autonomous Bug Hunter Agent</h2>
+                <p>Find bugs before users report them → Support sleeps, engineers fix faster, customers love you</p>
+            </div>
+
+            <div class="demo-area">
+                <h3>Connect PostHog Session Recordings 🎥</h3>
+                <div class="upload-zone" id="upload-bughunter" onclick="window.simulateUpload('bughunter')">
+                    <span class="upload-icon">🔍</span>
+                    <h3>Click to Analyze Session Recordings</h3>
+                    <p>Agent will scan recordings for frustration patterns, rage clicks, and errors</p>
+                </div>
+
+                <div class="processing" id="processing-bughunter">
+                    <div class="spinner"></div>
+                    <h3>Bug Hunter is Watching Sessions... <span class="hedgehog">🦔</span></h3>
+                    <p>Vision model analyzing user behavior, correlating with error logs, clustering issues</p>
+                </div>
+
+                <div class="results" id="results-bughunter">
+                    <h3>🐛 Bug Hunter Found 3 Critical Issues!</h3>
+                    
+                    <div class="result-item">
+                        <h4 data-emoji="🚨">Critical Bug: Checkout Flow Broken on Safari</h4>
+                        <p><strong>Impact:</strong> <span class="tag tag-red">847 users affected</span> <span class="tag tag-red">$127K ARR at risk</span></p>
+                        <p><strong>How Agent Found It:</strong></p>
+                        <p>• Watched 12,847 session recordings in last 24h</p>
+                        <p>• Detected 847 users with "rage click" pattern on payment button</p>
+                        <p>• Correlated with error logs: <code>TypeError: Cannot read 'submit' of undefined</code></p>
+                        <p>• Clustered: 98% of affected users are Safari 17.2+</p>
+                        <div class="confidence-bar">
+                            <div class="confidence-fill" style="width: 94%"></div>
+                        </div>
+                        <p style="margin-top: 1rem;"><strong>Confidence: 94.3%</strong> this is the root cause</p>
+                    </div>
+
+                    <div class="agent-chat">
+                        <div class="chat-message agent">
+                            <span class="sender">🤖 Bug Hunter Agent</span>
+                            I found a critical bug affecting 847 users. Here's what I know:
+                            <br><br>
+                            <strong>Pattern:</strong> Users click "Pay Now" button 5+ times with increasing speed (rage click detected)
+                            <br><br>
+                            <strong>Root Cause:</strong> JavaScript error in payment widget on Safari 17.2+
+                            <br><br>
+                            <strong>Evidence:</strong> 3 session recordings showing the exact moment of failure
+                        </div>
+                        <div class="chat-message system">
+                            <span class="sender">📊 Session Recording #48721</span>
+                            [0:00-0:45] User browses products normally
+                            [0:45-1:12] Adds items to cart ✅
+                            [1:12-1:30] Enters payment details ✅
+                            [1:30-1:45] Clicks "Pay Now" - no response ❌
+                            [1:45-2:00] Rage clicks 7 times ❌
+                            [2:00] User abandons checkout 💔
+                        </div>
+                    </div>
+
+                    <div class="result-item">
+                        <h4 data-emoji="📝">Auto-Generated Bug Report</h4>
+                        <p><strong>Title:</strong> [CRITICAL] Safari 17.2+ users cannot complete checkout</p>
+                        <p><strong>Priority:</strong> <span class="tag tag-red">P0 - Revenue Impact</span></p>
+                        <p><strong>Affected Users:</strong> 847 (5.2% of checkout attempts)</p>
+                        <p><strong>Revenue at Risk:</strong> $127,000 ARR</p>
+                        <p><strong>Root Cause:</strong> Payment SDK incompatibility with Safari 17.2</p>
+                        <p><strong>Suggested Fix:</strong> Update payment-sdk from 2.3.1 to 2.4.0</p>
+                        <p><strong>Evidence:</strong></p>
+                        <p>• 3 session recordings: [link] [link] [link]</p>
+                        <p>• Error logs: 847 occurrences in last 24h</p>
+                        <p>• Reproduction steps: Use Safari 17.2+, add item, checkout</p>
+                    </div>
+
+                    <div class="result-item">
+                        <h4 data-emoji="🔧">More Bugs Found (Medium Priority)</h4>
+                        <p><strong>Bug #2:</strong> Onboarding tooltip overlaps with sidebar on mobile</p>
+                        <p>• 234 users affected, 12% drop-off rate at this step</p>
+                        <p>• <span class="tag">UX Issue</span></p>
+                        <p style="margin-top: 1rem;"><strong>Bug #3:</strong> Feature flag "new_dashboard" causes slow load</p>
+                        <p>• 156 users experiencing 8s+ load times</p>
+                        <p>• <span class="tag">Performance</span></p>
+                    </div>
+
+                    <div class="visual-grid">
+                        <div class="visual-cell">
+                            <h5>Sessions Analyzed</h5>
+                            <p class="impact-number">12,847</p>
+                            <p>in 24 hours</p>
+                        </div>
+                        <div class="visual-cell">
+                            <h5>Bugs Found</h5>
+                            <p class="impact-number">3</p>
+                            <p>Before user reports</p>
+                        </div>
+                        <div class="visual-cell">
+                            <h5>Revenue Protected</h5>
+                            <p class="impact-number">$127K</p>
+                            <p>ARR saved</p>
+                        </div>
+                        <div class="visual-cell">
+                            <h5>Time to Detect</h5>
+                            <p class="impact-number">2.3h</p>
+                            <p>vs days manually</p>
+                        </div>
+                    </div>
+
+                    <button class="btn" onclick="window.downloadBugReport()">📥 Export to Linear/Jira</button>
+                    <button class="btn btn-secondary" onclick="window.resetDemo('bughunter')">🔄 Scan More Sessions</button>
+                </div>
+            </div>
+
+            <h3 style="font-size: 2rem; margin: 3rem 0 1.5rem 0; font-weight: 800;">Revenue Impact for PostHog 💸</h3>
+            <table class="impact-table">
+                <thead>
+                    <tr>
+                        <th>Metric</th>
+                        <th>Manual Bug Finding</th>
+                        <th>With Bug Hunter Agent</th>
+                        <th>Impact</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td>Time to Detect Bugs</td>
+                        <td>Days (user reports)</td>
+                        <td>Hours (proactive)</td>
+                        <td><span class="impact-number">90% faster detection</span></td>
+                    </tr>
+                    <tr>
+                        <td>Support Ticket Volume</td>
+                        <td>~500/month (bug-related)</td>
+                        <td>~150/month</td>
+                        <td><span class="impact-number">70% reduction</span></td>
+                    </tr>
+                    <tr>
+                        <td>Revenue at Risk (detected)</td>
+                        <td>Low visibility</td>
+                        <td>Quantified per bug</td>
+                        <td><span class="impact-number">Prioritize by $ impact</span></td>
+                    </tr>
+                    <tr>
+                        <td>Engineering Efficiency</td>
+                        <td>Manual reproduction</td>
+                        <td>Auto-reproduction steps</td>
+                        <td><span class="impact-number">3x faster fixes</span></td>
+                    </tr>
+                </tbody>
+            </table>
+
+            <h3 style="font-size: 2rem; margin: 3rem 0 1.5rem 0; font-weight: 800;">Technical Architecture 🏗️</h3>
+            
+            <div class="arch-diagram">
+                <h4 style="font-size: 1.5rem; margin-bottom: 2rem;">Bug Hunter Agent Flow</h4>
+                <div class="arch-flow">
+                    <div class="arch-node">🎥<br>Session<br>Recordings</div>
+                    <div class="arch-arrow">→</div>
+                    <div class="arch-node">👁️<br>Vision<br>Model</div>
+                    <div class="arch-arrow">→</div>
+                    <div class="arch-node">🔍<br>Pattern<br>Detector</div>
+                </div>
+                <div class="arch-flow">
+                    <div class="arch-arrow">↓</div>
+                </div>
+                <div class="arch-flow">
+                    <div class="arch-node">📊<br>Error<br>Correlator</div>
+                    <div class="arch-arrow">→</div>
+                    <div class="arch-node">🧠<br>Cluster<br>& Analyze</div>
+                    <div class="arch-arrow">→</div>
+                    <div class="arch-node">📝<br>Bug<br>Report</div>
+                </div>
+            </div>
+
+            <div class="feature-list">
+                <div class="feature-item">
+                    <h4 data-emoji="👁️">Vision Model Analysis</h4>
+                    <p>GPT-4o/Claude analyzes session recordings frame-by-frame. Detects rage clicks, confusion loops, abandonment patterns, UI glitches.</p>
+                </div>
+                <div class="feature-item">
+                    <h4 data-emoji="🔗">Error Log Correlation</h4>
+                    <p>Connects visual frustration to backend errors. When user rage-clicks, what errors fired? Builds causality chain automatically.</p>
+                </div>
+                <div class="feature-item">
+                    <h4 data-emoji="📊">Smart Clustering</h4>
+                    <p>Groups similar user struggles using embeddings. "847 users hit the same bug" not "847 separate tickets." Finds patterns humans miss.</p>
+                </div>
+                <div class="feature-item">
+                    <h4 data-emoji="💰">Revenue Impact Scoring</h4>
+                    <p>Connects bugs to revenue: "This bug affects 500 paying customers worth $50K ARR." Prioritize by business impact, not just severity.</p>
+                </div>
+            </div>
+
+            <div class="metrics-grid">
+                <div class="metric-card">
+                    <div class="metric-value">90%</div>
+                    <div class="metric-label">Faster Detection</div>
+                </div>
+                <div class="metric-card">
+                    <div class="metric-value">70%</div>
+                    <div class="metric-label">Fewer Support Tickets</div>
+                </div>
+                <div class="metric-card">
+                    <div class="metric-value">3x</div>
+                    <div class="metric-label">Faster Bug Fixes</div>
+                </div>
+                <div class="metric-card">
+                    <div class="metric-value">24/7</div>
+                    <div class="metric-label">Autonomous Watching</div>
+                </div>
+            </div>
+
+            <h3 style="font-size: 2rem; margin: 3rem 0 1.5rem 0; font-weight: 800;">Why This Wins 🏆</h3>
+            <div class="timeline">
+                <div class="timeline-item">
+                    <h5 data-emoji="🎯">Uses PostHog's Data Advantage</h5>
+                    <p>You already have session recordings + error tracking + analytics. This agent makes that data 10x more valuable by finding insights humans would miss.</p>
+                </div>
+                <div class="timeline-item">
+                    <h5 data-emoji="🤖">True Agentic AI</h5>
+                    <p>Not just "hit API with prompt." Multi-step reasoning: watch → detect → correlate → cluster → prioritize → report. Autonomous background processing.</p>
+                </div>
+                <div class="timeline-item">
+                    <h5 data-emoji="💰">Clear ROI</h5>
+                    <p>Every bug report includes revenue impact. "This bug costs $127K ARR" is impossible to ignore. Makes the agent's value undeniable.</p>
+                </div>
+                <div class="timeline-item">
+                    <h5 data-emoji="🚀">New Product Potential</h5>
+                    <p>Could become "PostHog Bug Hunter" - an AI-powered bug detection product. Upsell to existing customers, attract new ones who want proactive QA.</p>
+                </div>
+            </div>
+        </div>
+
+        <!-- Project 2: Product Autopilot -->
+        <div id="autopilot" class="project-section">
+            <div class="project-header">
+                <h2 data-emoji="🧠">Product Autopilot - Background PM Agent</h2>
+                <p>Your AI product manager that never sleeps → Finds opportunities, generates hypotheses, creates tickets</p>
+            </div>
+
+            <div class="demo-area">
+                <h3>Connect Your PostHog Workspace 📊</h3>
+                <div class="upload-zone" id="upload-autopilot" onclick="window.simulateUpload('autopilot')">
+                    <span class="upload-icon">🧠</span>
+                    <h3>Click to Activate Product Autopilot</h3>
+                    <p>Agent will analyze funnels, experiments, feature flags, and user behavior</p>
+                </div>
+
+                <div class="processing" id="processing-autopilot">
+                    <div class="spinner"></div>
+                    <h3>Product Autopilot is Analyzing... <span class="hedgehog">🦔</span></h3>
+                    <p>Scanning funnels, correlating behaviors, generating hypotheses</p>
+                </div>
+
+                <div class="results" id="results-autopilot">
+                    <h3>💡 Product Autopilot Found 4 Opportunities!</h3>
+                    
+                    <div class="result-item">
+                        <h4 data-emoji="🚀">High-Impact Insight: Trial Conversion Opportunity</h4>
+                        <p><strong>What I Found:</strong></p>
+                        <p>Users who create their first dashboard within 24h convert at <span class="tag tag-green">67%</span> vs <span class="tag">12% baseline</span></p>
+                        <p style="margin-top: 1rem;"><strong>Evidence:</strong></p>
+                        <p>• Analyzed 8,432 trial users from last 90 days</p>
+                        <p>• Correlation strength: 0.87 (very strong)</p>
+                        <p>• 47 session recordings of successful converters reviewed</p>
+                        <p>• Feature flag "onboarding_v2" shows 3.2x lift</p>
+                        <div class="confidence-bar">
+                            <div class="confidence-fill" style="width: 92%"></div>
+                        </div>
+                        <p style="margin-top: 1rem;"><strong>Confidence: 92%</strong></p>
+                    </div>
+
+                    <div class="agent-chat">
+                        <div class="chat-message agent">
+                            <span class="sender">🧠 Product Autopilot</span>
+                            I've identified a high-impact opportunity. Here's my analysis:
+                            <br><br>
+                            <strong>Insight:</strong> First dashboard creation within 24h is the strongest predictor of conversion.
+                            <br><br>
+                            <strong>Hypothesis:</strong> Adding a "Create Dashboard" nudge during onboarding will increase trial-to-paid conversion by 15-25%.
+                            <br><br>
+                            <strong>Proposed Action:</strong> A/B test with 20% traffic allocation.
+                        </div>
+                        <div class="chat-message system">
+                            <span class="sender">📊 Ready-to-Deploy Config</span>
+{
+  "experiment_name": "onboarding_dashboard_nudge",
+  "hypothesis": "Nudge increases conversion",
+  "traffic_allocation": 0.20,
+  "success_metric": "trial_to_paid_conversion",
+  "variants": ["control", "nudge_v1"],
+  "minimum_sample_size": 2500
+}
+                        </div>
+                    </div>
+
+                    <div class="result-item">
+                        <h4 data-emoji="📊">Generated Recommendations</h4>
+                        <p><strong>Recommendation #1:</strong> Add "Create Dashboard" step to onboarding</p>
+                        <p>• Expected lift: +15-25% conversion</p>
+                        <p>• Confidence: High (strong data signal)</p>
+                        <p>• <span class="tag tag-green">Ready to test</span></p>
+                        <p style="margin-top: 1rem;"><strong>Recommendation #2:</strong> Send email reminder at 20h if no dashboard</p>
+                        <p>• Expected lift: +8-12% conversion</p>
+                        <p>• Low effort, high impact</p>
+                        <p>• <span class="tag tag-green">Ready to implement</span></p>
+                    </div>
+
+                    <div class="result-item">
+                        <h4 data-emoji="📋">Auto-Created Linear Tickets</h4>
+                        <p><strong>Ticket #1:</strong> [EXPERIMENT] Test dashboard nudge in onboarding</p>
+                        <p>• Priority: High</p>
+                        <p>• Assigned to: Growth Team</p>
+                        <p>• Context: Full analysis + session recordings attached</p>
+                        <p style="margin-top: 1rem;"><strong>Ticket #2:</strong> [EMAIL] Implement 20h reminder for dashboard creation</p>
+                        <p>• Priority: Medium</p>
+                        <p>• Estimated effort: 2 story points</p>
+                    </div>
+
+                    <div class="result-item">
+                        <h4 data-emoji="🔔">Other Insights Detected</h4>
+                        <p><strong>Insight #2:</strong> Feature X has 2x engagement but only 10% discovery rate</p>
+                        <p>→ Recommend: Move to main nav or add tooltip</p>
+                        <p style="margin-top: 1rem;"><strong>Insight #3:</strong> Pricing page bounce rate increased 23% this week</p>
+                        <p>→ Recommend: Review recent changes, check competitor pricing</p>
+                        <p style="margin-top: 1rem;"><strong>Insight #4:</strong> Enterprise users churning after 3 months</p>
+                        <p>→ Recommend: Add QBR touchpoint at month 2</p>
+                    </div>
+
+                    <div class="visual-grid">
+                        <div class="visual-cell">
+                            <h5>Insights Found</h5>
+                            <p class="impact-number">4</p>
+                            <p>This week</p>
+                        </div>
+                        <div class="visual-cell">
+                            <h5>Potential Lift</h5>
+                            <p class="impact-number">+25%</p>
+                            <p>Conversion</p>
+                        </div>
+                        <div class="visual-cell">
+                            <h5>Tickets Created</h5>
+                            <p class="impact-number">2</p>
+                            <p>Auto-generated</p>
+                        </div>
+                        <div class="visual-cell">
+                            <h5>Time Saved</h5>
+                            <p class="impact-number">40h</p>
+                            <p>PM analysis</p>
+                        </div>
+                    </div>
+
+                    <button class="btn" onclick="window.downloadInsights()">📥 Export All Insights</button>
+                    <button class="btn btn-secondary" onclick="window.resetDemo('autopilot')">🔄 Run Another Analysis</button>
+                </div>
+            </div>
+
+            <h3 style="font-size: 2rem; margin: 3rem 0 1.5rem 0; font-weight: 800;">Revenue Impact for PostHog 💸</h3>
+            <table class="impact-table">
+                <thead>
+                    <tr>
+                        <th>Metric</th>
+                        <th>Manual PM Analysis</th>
+                        <th>With Product Autopilot</th>
+                        <th>Impact</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td>Insight Discovery Time</td>
+                        <td>Weeks (manual digging)</td>
+                        <td>Hours (continuous)</td>
+                        <td><span class="impact-number">95% faster</span></td>
+                    </tr>
+                    <tr>
+                        <td>Experiment Velocity</td>
+                        <td>2-3 experiments/month</td>
+                        <td>8-10 experiments/month</td>
+                        <td><span class="impact-number">3x more tests</span></td>
+                    </tr>
+                    <tr>
+                        <td>Conversion Improvement</td>
+                        <td>Incremental</td>
+                        <td>Data-driven optimization</td>
+                        <td><span class="impact-number">+15-25% conversion</span></td>
+                    </tr>
+                    <tr>
+                        <td>PM Productivity</td>
+                        <td>40% time on analysis</td>
+                        <td>10% time on analysis</td>
+                        <td><span class="impact-number">30% time back</span></td>
+                    </tr>
+                </tbody>
+            </table>
+
+            <h3 style="font-size: 2rem; margin: 3rem 0 1.5rem 0; font-weight: 800;">Technical Architecture 🏗️</h3>
+            
+            <div class="arch-diagram">
+                <h4 style="font-size: 1.5rem; margin-bottom: 2rem;">Product Autopilot Multi-Agent System</h4>
+                <div class="arch-flow">
+                    <div class="arch-node">📊<br>PostHog<br>Data</div>
+                    <div class="arch-arrow">→</div>
+                    <div class="arch-node">🔍<br>Analyzer<br>Agent</div>
+                    <div class="arch-arrow">→</div>
+                    <div class="arch-node">💡<br>Hypothesis<br>Agent</div>
+                    <div class="arch-arrow">→</div>
+                    <div class="arch-node">⚡<br>Action<br>Agent</div>
+                </div>
+                <p style="margin-top: 2rem; color: #5f6368;">Human-in-the-loop: Review before deploy</p>
+            </div>
+
+            <div class="feature-list">
+                <div class="feature-item">
+                    <h4 data-emoji="🔍">Analyzer Agent</h4>
+                    <p>Continuously scans funnels, cohorts, feature flags, experiments. Detects anomalies, correlations, opportunities. Runs 24/7 in background.</p>
+                </div>
+                <div class="feature-item">
+                    <h4 data-emoji="💡">Hypothesis Agent</h4>
+                    <p>Generates testable hypotheses from data. "If X correlates with Y, then doing Z should improve outcome." Includes confidence levels.</p>
+                </div>
+                <div class="feature-item">
+                    <h4 data-emoji="⚡">Action Agent</h4>
+                    <p>Creates ready-to-deploy assets: A/B test configs, feature flag setups, Linear tickets, Slack notifications. One click to launch.</p>
+                </div>
+                <div class="feature-item">
+                    <h4 data-emoji="📚">Learning Agent</h4>
+                    <p>Tracks which suggestions got implemented and their outcomes. Learns what works for YOUR product. Gets smarter over time.</p>
+                </div>
+            </div>
+
+            <div class="metrics-grid">
+                <div class="metric-card">
+                    <div class="metric-value">95%</div>
+                    <div class="metric-label">Faster Insights</div>
+                </div>
+                <div class="metric-card">
+                    <div class="metric-value">3x</div>
+                    <div class="metric-label">More Experiments</div>
+                </div>
+                <div class="metric-card">
+                    <div class="metric-value">24/7</div>
+                    <div class="metric-label">Always Watching</div>
+                </div>
+                <div class="metric-card">
+                    <div class="metric-value">+25%</div>
+                    <div class="metric-label">Conversion Potential</div>
+                </div>
+            </div>
+
+            <h3 style="font-size: 2rem; margin: 3rem 0 1.5rem 0; font-weight: 800;">Why This Wins 🏆</h3>
+            <div class="timeline">
+                <div class="timeline-item">
+                    <h5 data-emoji="🎯">Exactly What Job Description Says</h5>
+                    <p>"Background agents embedded into engineering workflows" - this IS that. Runs continuously, surfaces insights, creates actionable work items.</p>
+                </div>
+                <div class="timeline-item">
+                    <h5 data-emoji="🔗">Uses ALL PostHog Products</h5>
+                    <p>Analytics + funnels + feature flags + experiments + session recordings. Makes the whole platform more valuable, not just one feature.</p>
+                </div>
+                <div class="timeline-item">
+                    <h5 data-emoji="💼">New Product Category</h5>
+                    <p>"AI Product Manager" could be a standalone PostHog product. Charge extra for continuous optimization. Competitors don't have this.</p>
+                </div>
+                <div class="timeline-item">
+                    <h5 data-emoji="🧠">Real AI Engineering</h5>
+                    <p>Multi-agent architecture with LangGraph, human-in-the-loop, learning from outcomes. Not just prompts - real agentic system.</p>
+                </div>
+            </div>
+        </div>
+
+        <!-- Project 3: AgentLens -->
+        <div id="agentlens" class="project-section">
+            <div class="project-header">
+                <h2 data-emoji="📊">AgentLens - AI Agent Observability Platform</h2>
+                <p>PostHog for AI Agents → Every company building agents needs this. You build it first.</p>
+            </div>
+
+            <div class="demo-area">
+                <h3>Connect Your AI Agent 🤖</h3>
+                <div class="upload-zone" id="upload-agentlens" onclick="window.simulateUpload('agentlens')">
+                    <span class="upload-icon">📊</span>
+                    <h3>Click to Analyze Agent Performance</h3>
+                    <p>Traces, quality metrics, A/B tests, anomaly detection for AI agents</p>
+                </div>
+
+                <div class="processing" id="processing-agentlens">
+                    <div class="spinner"></div>
+                    <h3>AgentLens is Processing Traces... <span class="hedgehog">🦔</span></h3>
+                    <p>Analyzing agent behavior, quality metrics, detecting anomalies</p>
+                </div>
+
+                <div class="results" id="results-agentlens">
+                    <h3>📊 AgentLens Dashboard</h3>
+                    
+                    <div class="dashboard-preview">
+                        <div class="dashboard-header">
+                            <div class="dashboard-title">🤖 SQL Query Agent - Last 24h</div>
+                            <span class="tag tag-green">Healthy</span>
+                        </div>
+                        <div class="dashboard-stats">
+                            <div class="dash-stat">
+                                <div class="dash-stat-value">94.2%</div>
+                                <div class="dash-stat-label">Success Rate</div>
+                            </div>
+                            <div class="dash-stat">
+                                <div class="dash-stat-value">2.3s</div>
+                                <div class="dash-stat-label">Avg Latency</div>
+                            </div>
+                            <div class="dash-stat">
+                                <div class="dash-stat-value">$0.003</div>
+                                <div class="dash-stat-label">Cost/Query</div>
+                            </div>
+                            <div class="dash-stat">
+                                <div class="dash-stat-value">4.7/5</div>
+                                <div class="dash-stat-label">User Rating</div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="result-item">
+                        <h4 data-emoji="🚨">Alert: Anomaly Detected</h4>
+                        <p><strong>Issue:</strong> 12% of queries failing on "revenue" tables</p>
+                        <p><strong>Root Cause:</strong> Missing schema context in prompt</p>
+                        <p><strong>Suggested Fix:</strong> Add table descriptions to system prompt</p>
+                        <p><strong>Impact:</strong> Affecting 847 queries/day</p>
+                        <div class="confidence-bar">
+                            <div class="confidence-fill" style="width: 87%"></div>
+                        </div>
+                        <p style="margin-top: 1rem;"><strong>Fix Confidence: 87%</strong></p>
+                    </div>
+
+                    <div class="result-item">
+                        <h4 data-emoji="🧪">A/B Test Running: prompt_v3 vs prompt_v4</h4>
+                        <p><strong>Test Duration:</strong> 3 days (2 remaining)</p>
+                        <p><strong>Sample Size:</strong> 4,821 queries</p>
+                        <p style="margin-top: 1rem;"><strong>Results So Far:</strong></p>
+                        <p>• <strong>prompt_v4:</strong> <span class="tag tag-green">+8% accuracy</span> <span class="tag tag-green">-15% latency</span></p>
+                        <p>• <strong>Confidence:</strong> 94% (statistically significant)</p>
+                        <p>• <strong>Recommendation:</strong> <span class="tag tag-green">Ship prompt_v4</span></p>
+                    </div>
+
+                    <div class="result-item">
+                        <h4 data-emoji="🔍">Trace Viewer: Query #48721</h4>
+                        <div class="agent-chat">
+                            <div class="chat-message system">
+                                <span class="sender">📥 Input</span>
+                                "Show me revenue by region for Q4"
+                            </div>
+                            <div class="chat-message agent">
+                                <span class="sender">🧠 Reasoning (Step 1)</span>
+                                User wants revenue data grouped by region for Q4.
+                                Need to: 1) Find revenue table 2) Filter by date 3) Group by region
+                            </div>
+                            <div class="chat-message system">
+                                <span class="sender">🔧 Tool Call: schema_lookup</span>
+                                Found: orders.revenue, orders.region, orders.created_at
+                            </div>
+                            <div class="chat-message agent">
+                                <span class="sender">📝 Output: SQL Query</span>
+                                SELECT region, SUM(revenue) FROM orders 
+                                WHERE created_at >= '2024-10-01' 
+                                GROUP BY region
+                            </div>
+                            <div class="chat-message system">
+                                <span class="sender">✅ Execution: 1.2s | Cost: $0.002 | Rating: 5/5</span>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="result-item">
+                        <h4 data-emoji="📊">Behavior Clustering</h4>
+                        <p><strong>Top Query Categories:</strong></p>
+                        <p>• <strong>Revenue Queries:</strong> 34% (highest volume)</p>
+                        <p>• <strong>User Analytics:</strong> 28%</p>
+                        <p>• <strong>Funnel Analysis:</strong> 22%</p>
+                        <p>• <strong>Cohort Queries:</strong> 16%</p>
+                        <p style="margin-top: 1rem;"><strong>Failure Patterns:</strong></p>
+                        <p>• 67% of failures on complex JOINs</p>
+                        <p>• 23% on date range calculations</p>
+                        <p>• 10% on aggregations</p>
+                    </div>
+
+                    <div class="visual-grid">
+                        <div class="visual-cell">
+                            <h5>Traces Today</h5>
+                            <p class="impact-number">12.4K</p>
+                            <p>Fully tracked</p>
+                        </div>
+                        <div class="visual-cell">
+                            <h5>Success Rate</h5>
+                            <p class="impact-number">94.2%</p>
+                            <p>+2.1% vs last week</p>
+                        </div>
+                        <div class="visual-cell">
+                            <h5>A/B Tests</h5>
+                            <p class="impact-number">3</p>
+                            <p>Running</p>
+                        </div>
+                        <div class="visual-cell">
+                            <h5>Cost Saved</h5>
+                            <p class="impact-number">$4.2K</p>
+                            <p>This month</p>
+                        </div>
+                    </div>
+
+                    <button class="btn" onclick="window.downloadAgentReport()">📥 Export Performance Report</button>
+                    <button class="btn btn-secondary" onclick="window.resetDemo('agentlens')">🔄 Analyze Another Agent</button>
+                </div>
+            </div>
+
+            <h3 style="font-size: 2rem; margin: 3rem 0 1.5rem 0; font-weight: 800;">Revenue Impact for PostHog 💸</h3>
+            <table class="impact-table">
+                <thead>
+                    <tr>
+                        <th>Metric</th>
+                        <th>Without AgentLens</th>
+                        <th>With AgentLens</th>
+                        <th>Impact</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td>New Market Size</td>
+                        <td>$0 (not in market)</td>
+                        <td>AI observability market</td>
+                        <td><span class="impact-number">$2B+ TAM by 2026</span></td>
+                    </tr>
+                    <tr>
+                        <td>New Customer Segment</td>
+                        <td>Product teams only</td>
+                        <td>+ AI/ML teams</td>
+                        <td><span class="impact-number">2x addressable market</span></td>
+                    </tr>
+                    <tr>
+                        <td>Revenue per Customer</td>
+                        <td>Product analytics only</td>
+                        <td>+ Agent observability</td>
+                        <td><span class="impact-number">+40% ARPU</span></td>
+                    </tr>
+                    <tr>
+                        <td>Competitive Moat</td>
+                        <td>Crowded analytics space</td>
+                        <td>First to agent observability</td>
+                        <td><span class="impact-number">18-month lead</span></td>
+                    </tr>
+                </tbody>
+            </table>
+
+            <h3 style="font-size: 2rem; margin: 3rem 0 1.5rem 0; font-weight: 800;">Technical Architecture 🏗️</h3>
+            
+            <div class="arch-diagram">
+                <h4 style="font-size: 1.5rem; margin-bottom: 2rem;">AgentLens Data Flow</h4>
+                <div class="arch-flow">
+                    <div class="arch-node">🤖<br>Your<br>Agent</div>
+                    <div class="arch-arrow">→</div>
+                    <div class="arch-node">📡<br>OTel<br>SDK</div>
+                    <div class="arch-arrow">→</div>
+                    <div class="arch-node">🗄️<br>ClickHouse<br>Storage</div>
+                    <div class="arch-arrow">→</div>
+                    <div class="arch-node">📊<br>AgentLens<br>Dashboard</div>
+                </div>
+            </div>
+
+            <div class="code-block">
+<span style="color: #8b949e;"># AgentLens SDK - 3 lines to instrument any agent</span>
+<span style="color: #ff7b72;">from</span> agentlens <span style="color: #ff7b72;">import</span> trace_agent
+
+<span style="color: #ff7b72;">@</span><span style="color: #d2a8ff;">trace_agent</span>(name=<span style="color: #a5d6ff;">"sql_query_agent"</span>)
+<span style="color: #d2a8ff;">async def</span> <span style="color: #d2a8ff;">query_agent</span>(user_input: <span style="color: #79c0ff;">str</span>) -> <span style="color: #79c0ff;">str</span>:
+    <span style="color: #8b949e;"># Your agent code here</span>
+    result = <span style="color: #ff7b72;">await</span> llm.complete(user_input)
+    <span style="color: #ff7b72;">return</span> result
+
+<span style="color: #8b949e;"># Automatic: traces, latency, cost, quality metrics</span>
+            </div>
+
+            <div class="feature-list">
+                <div class="feature-item">
+                    <h4 data-emoji="🔍">Trace Visualization</h4>
+                    <p>See every step an agent took: Input → Reasoning → Tool Calls → Output. Like session replay, but for AI agents. Debug failures instantly.</p>
+                </div>
+                <div class="feature-item">
+                    <h4 data-emoji="📊">Quality Metrics</h4>
+                    <p>Track what matters: success rate, latency, cost, user ratings, hallucination rate. Real-time dashboards with historical trends.</p>
+                </div>
+                <div class="feature-item">
+                    <h4 data-emoji="🧪">A/B Testing for Agents</h4>
+                    <p>Test different prompts, models, or architectures. Statistical significance built-in. Know which version performs better with confidence.</p>
+                </div>
+                <div class="feature-item">
+                    <h4 data-emoji="🚨">Anomaly Detection</h4>
+                    <p>Automatic alerts: "Success rate dropped 20%" or "New failure mode detected." Catch regressions before users complain.</p>
+                </div>
+            </div>
+
+            <div class="metrics-grid">
+                <div class="metric-card">
+                    <div class="metric-value">$2B+</div>
+                    <div class="metric-label">Market by 2026</div>
+                </div>
+                <div class="metric-card">
+                    <div class="metric-value">18mo</div>
+                    <div class="metric-label">First Mover Lead</div>
+                </div>
+                <div class="metric-card">
+                    <div class="metric-value">+40%</div>
+                    <div class="metric-label">ARPU Potential</div>
+                </div>
+                <div class="metric-card">
+                    <div class="metric-value">2x</div>
+                    <div class="metric-label">Market Expansion</div>
+                </div>
+            </div>
+
+            <h3 style="font-size: 2rem; margin: 3rem 0 1.5rem 0; font-weight: 800;">Why This Wins 🏆</h3>
+            <div class="timeline">
+                <div class="timeline-item">
+                    <h5 data-emoji="🎯">Job Description Alignment</h5>
+                    <p>"Building the analytics and observability layer around those agents - surfacing insights, clustering behaviors, and measuring model quality" - THIS IS THAT.</p>
+                </div>
+                <div class="timeline-item">
+                    <h5 data-emoji="💰">New Revenue Stream</h5>
+                    <p>Every company building AI agents needs observability. There's no dominant player yet. PostHog could own this category before it's crowded.</p>
+                </div>
+                <div class="timeline-item">
+                    <h5 data-emoji="🔗">Natural Extension</h5>
+                    <p>Uses PostHog's existing stack: ClickHouse for traces, React for dashboards, feature flags for A/B tests. Not starting from scratch.</p>
+                </div>
+                <div class="timeline-item">
+                    <h5 data-emoji="🚀">2026 Timing Perfect</h5>
+                    <p>AI agents are exploding. By 2026, every product team will have agents. Building this now means being the default choice when market matures.</p>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <footer>
+        <p style="font-size: 1.5rem; margin-bottom: 1.5rem; font-weight: 800;">🦔 Built for PostHog by Sam</p>
+        <p style="font-size: 1.15rem; margin-bottom: 1rem;">Three agentic AI projects that make PostHog 10x more powerful 🤖</p>
+        <p style="margin-top: 2rem; font-size: 1.1rem;">
+            <strong>Why I'm the Right AI Product Engineer:</strong>
+        </p>
+        <p style="margin-top: 1rem; color: #f3ede1;">
+            ✓ Ship end-to-end AI apps (not just prompts)<br>
+            ✓ Production ML systems at global scale (3B viewers, Paris 2024)<br>
+            ✓ Think like a product builder (user outcomes > code)<br>
+            ✓ Experience with agentic AI, workflow automation, copilots<br>
+            ✓ Full-stack: Python, React, ClickHouse, LangGraph<br>
+            ✓ Embrace weird (built ML demos for bacteriophage therapy in 2 weeks)
+        </p>
+        <p style="margin-top: 2rem;">
+            <a href="https://www.linkedin.com/in/sameer-n-185a93161/" target="_blank">LinkedIn</a> | 
+            <a href="mailto:sameerm1421999@gmail.com">sameerm1421999@gmail.com</a> |
+            <a href="https://samson1402.github.io/portfolio/" target="_blank">Portfolio</a>
+        </p>
+        <p style="margin-top: 2.5rem; font-size: 1.1rem; font-weight: 700;">
+            Ready to build agents on real customer data with massive impact 🚀
+        </p>
+        <p style="margin-top: 1.5rem; font-size: 0.9rem; opacity: 0.8;">
+            © 2024 Sam - AI Product Engineer for PostHog
+        </p>
+    </footer>
+
+    <script>
+        // Make all functions globally accessible
+        window.simulateUpload = function(project) {
+            console.log('Simulating upload for:', project);
+            const uploadZone = document.getElementById('upload-' + project);
+            const processing = document.getElementById('processing-' + project);
+            const results = document.getElementById('results-' + project);
+            
+            if (!uploadZone || !processing || !results) {
+                console.error('Missing elements for project:', project);
+                return;
+            }
+            
+            uploadZone.classList.add('active');
+            
+            setTimeout(function() {
+                uploadZone.style.display = 'none';
+                processing.classList.add('active');
+                
+                setTimeout(function() {
+                    processing.classList.remove('active');
+                    results.classList.add('active');
+                    
+                    const bars = results.querySelectorAll('.confidence-fill');
+                    bars.forEach(function(bar) {
+                        const currentStyle = bar.getAttribute('style');
+                        const match = currentStyle ? currentStyle.match(/width:\s*(\d+)%/) : null;
+                        const targetWidth = match ? match[1] : '95';
+                        bar.style.width = '0%';
+                        setTimeout(function() {
+                            bar.style.width = targetWidth + '%';
+                        }, 100);
+                    });
+                }, 3000);
+            }, 500);
+        };
+
+        window.resetDemo = function(project) {
+            console.log('Resetting:', project);
+            const uploadZone = document.getElementById('upload-' + project);
+            const processing = document.getElementById('processing-' + project);
+            const results = document.getElementById('results-' + project);
+            
+            if (!uploadZone || !processing || !results) {
+                console.error('Missing elements');
+                return;
+            }
+            
+            uploadZone.style.display = 'block';
+            uploadZone.classList.remove('active');
+            processing.classList.remove('active');
+            results.classList.remove('active');
+            
+            uploadZone.scrollIntoView({ behavior: 'smooth', block: 'center' });
+        };
+
+        window.downloadBugReport = function() {
+            alert('📥 Exporting Bug Reports to Linear...\n\nIn production: Creates Linear tickets with full context, session recording links, error logs, and reproduction steps.');
+        };
+
+        window.downloadInsights = function() {
+            alert('📥 Exporting Product Insights...\n\nIn production: JSON/CSV export with all insights, hypotheses, A/B test configs, and recommended actions.');
+        };
+
+        window.downloadAgentReport = function() {
+            alert('📥 Exporting Agent Performance Report...\n\nIn production: Full observability report with traces, quality metrics, A/B test results, and optimization recommendations.');
+        };
+
+        // Navigation setup
+        document.addEventListener('DOMContentLoaded', function() {
+            console.log('🦔 PostHog AI Demo Loaded!');
+            
+            document.querySelectorAll('.nav-btn').forEach(function(btn) {
+                btn.addEventListener('click', function() {
+                    console.log('Switching project...');
+                    document.querySelectorAll('.nav-btn').forEach(function(b) {
+                        b.classList.remove('active');
+                    });
+                    document.querySelectorAll('.project-section').forEach(function(s) {
+                        s.classList.remove('active');
+                    });
+                    
+                    this.classList.add('active');
+                    
+                    var projectId = this.getAttribute('data-project');
+                    var target = document.getElementById(projectId);
+                    if (target) {
+                        target.classList.add('active');
+                        window.scrollTo({ top: 0, behavior: 'smooth' });
+                    }
+                });
+            });
+        });
+
+        // Console message
+        console.log('%c🦔 PostHog AI Product Engineering Demo Suite', 'font-size: 24px; font-weight: bold; color: #f7a501;');
+        console.log('%cBuilt by Sam - AI Product Engineer Candidate', 'font-size: 14px; color: #35373b;');
+        console.log('%cThree agentic AI projects that make PostHog 10x more powerful', 'font-size: 12px; color: #5f6368;');
+    </script>
+</body>
+</html>
